@@ -71,10 +71,21 @@ function createBox(item) {
     <p class="info">${text}</p>
   `;
 
-  // @todo speak event
+  box.addEventListener('click', () => {
+    setTextMessage(text);
+    speakText();
+
+    //add active effect
+    main.classList.add('active');
+    setTimeout(() => box.classList.remove('active'), 800);
+  })
 
   main.appendChild(box);
 }
+
+//Init Speech synth
+
+const message = new SpeechSynthesisUtterance();
 
 // store voices
 let voices = [];
@@ -92,7 +103,16 @@ function getVoices() {
   });
 }
 
-//
+//set text
+function setTextMessage(text) {
+  message.text = text
+}
+
+// speak the text
+function speakText() {
+  speechSynthesis.speak(message);
+}
+
 speechSynthesis.addEventListener('voiceschanged', getVoices);
 
 // toggle text box
